@@ -36,7 +36,7 @@ export const backupFirebaseAuthentication = functions
       + '-' + ('0' + now.getHours()).slice(-2)
       + ('0' + now.getMinutes()).slice(-2)
       + ('0' + now.getSeconds()).slice(-2)
-    const plaintextFileName = `firebase-authentication-backup-${timestamp}.csv`
+    const plaintextFileName = `firebase-authentication-backup-${timestamp}.json`
 
     const tmpDir = '/tmp'
     const tmpPlaintextFileName = `${tmpDir}/${plaintextFileName}`
@@ -47,7 +47,7 @@ export const backupFirebaseAuthentication = functions
     const gcsDestination = `${now.getFullYear()}/${('0' + (now.getMonth() + 1)).slice(-2)}/${plaintextFileName}.encripted`
 
     // ローカルに取得
-    await firebaseTools.auth.export(tmpPlaintextFileName, { project: projectId })
+    await firebaseTools.auth.export(tmpPlaintextFileName, { project: projectId, exportOptions: "json"})
 
     // ファイル読み込み
     const plaintext = fs.readFileSync(tmpPlaintextFileName)
